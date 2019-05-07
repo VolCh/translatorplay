@@ -18,4 +18,12 @@ class TokenizerTest
         assert($token->type() === 'EOF');
         assert($token->value() === null);
     }
+
+    public function testOneDigit(): void
+    {
+        $tokenGenerator = Tokenizer::createGenerator('1');
+        $token = $tokenGenerator->current();
+        assert($token->type() === 'INTEGER');
+        assert($token->value() === 1);
+    }
 }

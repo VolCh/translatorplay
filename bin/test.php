@@ -13,3 +13,4 @@ require_once __DIR__ . '/../test/Tokenizer/TokenizerTest.php';
 
 $testSuite = new TokenizerTest();
 $testSuite->testEmpty();
+$testSuite->testOneDigit();
