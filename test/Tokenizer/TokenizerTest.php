@@ -34,11 +34,7 @@ class TokenizerTest
         $this->assertTokens($tokens, [
             [
                 'type' => Token::TYPE_INTEGER,
-                'value' => 1,
-            ],
-            [
-                'type' => Token::TYPE_INTEGER,
-                'value' => 2,
+                'value' => 12,
             ],
         ]);
     }

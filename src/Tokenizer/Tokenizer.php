@@ -25,8 +25,7 @@ class Tokenizer
         while ($this->currentChar() !== null) {
             $char = $this->currentChar();
             if (ctype_digit($char)) {
-                $this->advance();
-                yield new Token(Token::TYPE_INTEGER, (int)$char);
+                yield new Token(Token::TYPE_INTEGER, $this->integer());
             } else {
                 throw new InvalidArgumentException("Unexpected symbol '{$char}' at a position {$this->pos}");
             }
@@ -42,5 +41,15 @@ class Tokenizer
     private function advance(): void
     {
         $this->pos++;
+    }
+
+    private function integer(): int
+    {
+        $chars = '';
+        while (ctype_digit($this->currentChar())) {
+            $chars .= $this->currentChar();
+            $this->advance();
+        }
+        return (int)$chars;
     }
 }
