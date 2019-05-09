@@ -26,6 +26,9 @@ class Tokenizer
             $char = $this->currentChar();
             if (ctype_digit($char)) {
                 yield new Token(Token::TYPE_INTEGER, $this->integer());
+            } elseif ($char === '+') {
+                $this->advance();
+                yield new Token(Token::TYPE_PLUS, '+');
             } else {
                 throw new InvalidArgumentException("Unexpected symbol '{$char}' at a position {$this->pos}");
             }

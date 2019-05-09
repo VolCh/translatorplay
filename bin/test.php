@@ -23,6 +23,7 @@ $tokenizerTest = new TokenizerTest();
 $tokenizerTest->testEmpty();
 $tokenizerTest->testOneDigit();
 $tokenizerTest->testDigits();
+$tokenizerTest->testIntegerPlusInteger();
 
 $parserTest = new ParserTest();
 $parserTest->parseDigit();

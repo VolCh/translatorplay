@@ -39,6 +39,25 @@ class TokenizerTest
         ]);
     }
 
+    public function testIntegerPlusInteger(): void
+    {
+        $tokens= (new Tokenizer('12+34'))->tokens();
+        $this->assertTokens($tokens, [
+            [
+                'type' => Token::TYPE_INTEGER,
+                'value' => 12,
+            ],
+            [
+                'type' => Token::TYPE_PLUS,
+                'value' => '+',
+            ],
+            [
+                'type' => Token::TYPE_INTEGER,
+                'value' => 34,
+            ],
+        ]);
+    }
+
     /**
      * @param Generator|Token[] $tokens
      * @param array[] $expectedTokensData

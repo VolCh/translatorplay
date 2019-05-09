@@ -11,8 +11,9 @@ use InvalidArgumentException;
 class Token
 {
     public const TYPE_INTEGER = 'INTEGER';
+    public const TYPE_PLUS = 'PLUS';
 
-    private const TYPES = [self::TYPE_INTEGER];
+    private const TYPES = [self::TYPE_INTEGER, self::TYPE_PLUS];
 
     /** @var string */
     private $type;
