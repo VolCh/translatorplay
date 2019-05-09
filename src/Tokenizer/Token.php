@@ -10,10 +10,9 @@ use InvalidArgumentException;
  */
 class Token
 {
-    public const TYPE_EOF = 'EOF';
     public const TYPE_INTEGER = 'INTEGER';
 
-    private const TYPES = [self::TYPE_EOF, self::TYPE_INTEGER];
+    private const TYPES = [self::TYPE_INTEGER];
 
     /** @var string */
     private $type;

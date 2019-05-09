@@ -22,7 +22,7 @@ class Parser
         $this->tokenStream = $tokenizer;
     }
 
-    private function currentToken(): Token
+    private function currentToken(): ?Token
     {
         return $this->tokenStream->current();
     }
@@ -41,19 +41,21 @@ class Parser
      */
     private function integerLiteral(): IntegerLiteral
     {
-        $token = $this->tokenStream->current();
+        $token = $this->currentToken();
+
         return new IntegerLiteral($token);
     }
 
     public function parse(): Node
     {
         $currentToken = $this->currentToken();
-        switch ($currentToken->type()) {
+        $tokenType = $currentToken->type();
+        switch ($tokenType) {
             case Token::TYPE_INTEGER;
                 $node = $this->expression();
                 break;
             default:
-                throw new DomainException('Unsupported token' . $currentToken->type());
+                throw new DomainException("Unsupported token type $tokenType");
         }
         return $node;
     }

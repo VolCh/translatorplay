@@ -10,19 +10,37 @@ use InvalidArgumentException;
  */
 class Tokenizer
 {
-    /**
-     * @param string $input String to parse
-     * @return Generator|Token[] Generator of Token stream
-     */
-    public static function createGenerator(string $input): Generator
+    /** @var string */
+    private $input;
+
+    public function __construct(string $input)
     {
-        if ($input === '') {
-            $token = new Token(Token::TYPE_EOF, null);
-        } elseif (preg_match('/^\d$/', $input) === 1) {
-            $token = new Token(Token::TYPE_INTEGER, (int)$input);
-        } else {
-            throw new InvalidArgumentException('Unexpected symbol ' . $input);
+        $this->input = $input;
+        $this->pos = 0;
+    }
+
+    /** @return Generator|Token[] */
+    public function tokens(): Generator
+    {
+        while ($this->currentChar() !== null) {
+            $char = $this->currentChar();
+            if (ctype_digit($char)) {
+                $this->advance();
+                yield new Token(Token::TYPE_INTEGER, (int)$char);
+            } else {
+                throw new InvalidArgumentException("Unexpected symbol '{$char}' at a position {$this->pos}");
+            }
         }
-        yield $token;
+
+    }
+
+    private function currentChar(): ?string
+    {
+        return $this->input[$this->pos] ?? null;
+    }
+
+    private function advance(): void
+    {
+        $this->pos++;
     }
 }

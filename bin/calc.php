@@ -13,8 +13,8 @@ require_once __DIR__ . '/../src/Parser/Node/IntegerLiteral.php';
 require_once __DIR__ . '/../src/Interpreter/Interpreter.php';
 
 $input = $argv[1];
-$tokenizer = new Tokenizer();
-$tokens = Tokenizer::createGenerator($input);
+$tokenizer = new Tokenizer($input);
+$tokens = $tokenizer->tokens();
 $parser = new Parser($tokens);
 $ast = $parser->parse();
 $interpreter = new Interpreter();

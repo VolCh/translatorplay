@@ -22,6 +22,7 @@ require_once __DIR__ . '/../test/Interpreter/InterpreterTest.php';
 $tokenizerTest = new TokenizerTest();
 $tokenizerTest->testEmpty();
 $tokenizerTest->testOneDigit();
+$tokenizerTest->testDigits();
 
 $parserTest = new ParserTest();
 $parserTest->parseDigit();
