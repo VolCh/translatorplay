@@ -9,10 +9,14 @@ abstract class Node
 {
     public function asArray(): array
     {
-        $parts = explode('\\', static::class);
-        $type = end($parts);
         return [
-            'type' => $type,
+            'type' => $this->type(),
         ];
+    }
+
+    public function type(): string
+    {
+        $fqcnParts = explode('\\', static::class);
+        return end($fqcnParts);
     }
 }

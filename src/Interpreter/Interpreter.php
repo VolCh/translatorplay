@@ -12,8 +12,19 @@ class Interpreter
 {
     public function interpret(Node $node): void
     {
-        if ($node instanceof IntegerLiteral) {
-            echo $node->value();
-        }
+        $result = $this->visit($node);
+        echo $result;
+    }
+
+    private function visit(Node $node)
+    {
+        $visitMethodName = "visit{$node->type()}";
+        return $this->$visitMethodName($node);
+
+    }
+
+    private function visitIntegerLiteral(IntegerLiteral $node)
+    {
+        return $node->value();
     }
 }

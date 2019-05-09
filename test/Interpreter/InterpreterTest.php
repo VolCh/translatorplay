@@ -4,19 +4,21 @@ namespace App\Test\Interpreter;
 
 use App\Interpreter\Interpreter;
 use App\Parser\Node\IntegerLiteral;
+use App\Test\Test;
 use App\Tokenizer\Token;
 
 /**
  * Class InterpreterTest
  */
-class InterpreterTest
+class InterpreterTest extends Test
 {
-    public function testInteger(): void
+    public function testIntegerLiteral(): void
     {
         $interpreter = new Interpreter();
+        $tree = new IntegerLiteral(new Token(Token::TYPE_INTEGER, 1));
         ob_start();
-        $interpreter->interpret(new IntegerLiteral(new Token(Token::TYPE_INTEGER, 1)));
+        $interpreter->interpret($tree);
         $content = ob_get_clean();
-        assert($content === '1');
+        $this->assertEquals($content, '1');
     }
 }

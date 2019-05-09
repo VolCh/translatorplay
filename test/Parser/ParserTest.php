@@ -3,27 +3,28 @@
 namespace App\Test\Parser;
 
 use App\Parser\Parser;
+use App\Test\Test;
 use App\Tokenizer\Token;
 
 /**
  * Class ParserTest
  */
-class ParserTest
+class ParserTest extends Test
 {
-    public function parseIntegerLiteral(): void
+    public function testIntegerLiteral(): void
     {
         $tokens = static function () {
             yield new Token(Token::TYPE_INTEGER, 1);
         };
         $parser = new Parser($tokens());
         $tree = $parser->parse();
-        assert($tree->asArray() === [
+        $this->assertEquals($tree->asArray(), [
             'type' => 'IntegerLiteral',
             'value' => 1,
         ]);
     }
 
-    public function parseIntegerPlusInteger(): void
+    public function testPlus(): void
     {
         $tokens = static function () {
             yield new Token(Token::TYPE_INTEGER, 1);
@@ -32,7 +33,7 @@ class ParserTest
         };
         $parser = new Parser($tokens());
         $tree = $parser->parse();
-        assert($tree->asArray() === [
+        $this->assertEquals($tree->asArray(), [
             'type' => 'BinaryOperator',
             'operator' => '+',
             'left' => [

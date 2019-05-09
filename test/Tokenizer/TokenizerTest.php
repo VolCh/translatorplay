@@ -2,6 +2,7 @@
 
 namespace App\Test\Tokenizer;
 
+use App\Test\Test;
 use App\Tokenizer\Token;
 use App\Tokenizer\Tokenizer;
 use Generator;
@@ -9,7 +10,7 @@ use Generator;
 /**
  * Class TokenizerTest
  */
-class TokenizerTest
+class TokenizerTest extends Test
 {
     public function testEmpty(): void
     {
@@ -17,7 +18,7 @@ class TokenizerTest
         $this->assertTokens($tokens, []);
     }
 
-    public function testOneDigit(): void
+    public function testOneDigitIntegerLiteral(): void
     {
         $tokens= (new Tokenizer('1'))->tokens();
         $this->assertTokens($tokens, [
@@ -28,7 +29,7 @@ class TokenizerTest
         ]);
     }
 
-    public function testDigits(): void
+    public function testIntegerLiteral(): void
     {
         $tokens= (new Tokenizer('12'))->tokens();
         $this->assertTokens($tokens, [
@@ -39,7 +40,7 @@ class TokenizerTest
         ]);
     }
 
-    public function testIntegerPlusInteger(): void
+    public function testPlus(): void
     {
         $tokens= (new Tokenizer('12+34'))->tokens();
         $this->assertTokens($tokens, [
@@ -66,12 +67,13 @@ class TokenizerTest
     {
         $index = 0;
         foreach ($tokens as $token) {
-            assert(array_key_exists($index, $expectedTokensData));
-            $expectedTokenData = $expectedTokensData[$index];
-            assert($token->type() === $expectedTokenData['type']);
-            assert($token->value() === $expectedTokenData['value']);
+//            var_dump($token);
+            $this->assertEquals(array_key_exists($index, $expectedTokensData), true);
+            ['type' => $expectedType, 'value' => $expectedValue] = $expectedTokensData[$index];
+            $this->assertEquals($token->type(), $expectedType);
+            $this->assertEquals($token->value(), $expectedValue);
             $index++;
         }
-        assert($index === count($expectedTokensData));
+        $this->assertEquals($index, count($expectedTokensData));
     }
 }
