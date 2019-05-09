@@ -7,11 +7,10 @@ use App\Tokenizer\Token;
 
 /**
  * Class ParserTest
- * @package App\Test\Parser
  */
 class ParserTest
 {
-    public function parseDigit(): void
+    public function parseIntegerLiteral(): void
     {
         $tokens = static function () {
             yield new Token(Token::TYPE_INTEGER, 1);
@@ -21,6 +20,29 @@ class ParserTest
         assert($tree->asArray() === [
             'type' => 'IntegerLiteral',
             'value' => 1,
+        ]);
+    }
+
+    public function parseIntegerPlusInteger(): void
+    {
+        $tokens = static function () {
+            yield new Token(Token::TYPE_INTEGER, 1);
+            yield new Token(Token::TYPE_PLUS, '+');
+            yield new Token(Token::TYPE_INTEGER, 2);
+        };
+        $parser = new Parser($tokens());
+        $tree = $parser->parse();
+        assert($tree->asArray() === [
+            'type' => 'BinaryOperator',
+            'operator' => '+',
+            'left' => [
+                    'type' => 'IntegerLiteral',
+                    'value' => 1,
+                ],
+            'right' => [
+                'type' => 'IntegerLiteral',
+                'value' => 2,
+            ],
         ]);
     }
 }
