@@ -41,15 +41,16 @@ class Parser
 
 
     /**
-     * expression : integerLiteral
+     * expression : integerLiteral (PLUS integerLiteral)*
      */
     private function expression(): Node
     {
         $node = $this->integerLiteral();
         $token = $this->currentToken();
-        if ($token !== null && $token->type() === Token::TYPE_PLUS) {
+        while ($token !== null && $token->type() === Token::TYPE_PLUS) {
             $this->takeToken(Token::TYPE_PLUS);
             $node = new BinaryOperator($node, $token, $this->integerLiteral());
+            $token = $this->currentToken();
         }
 
         return $node;
