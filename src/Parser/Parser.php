@@ -52,6 +52,8 @@ class Parser
                 $this->takeToken($token->type());
                 $node = new BinaryOperator($node, $token, $this->term());
                 $token = $this->currentToken();
+            } else {
+                break;
             }
         }
 
@@ -59,11 +61,33 @@ class Parser
     }
 
     /**
-     * Term is a member of an addition or an subtraction
+     * Term is a member of an addition or a subtraction
      *
-     * term : integerLiteral
+     * term : factor ((MULTI | DIV)) factor)*
      */
     private function term(): Node
+    {
+        $node = $this->factor();
+        $token = $this->currentToken();
+        while ($token !== null) {
+            if (in_array($token->type(), [Token::TYPE_MULTI, Token::TYPE_DIV], true)) {
+                $this->takeToken($token->type());
+                $node = new BinaryOperator($node, $token, $this->factor());
+                $token = $this->currentToken();
+            } else {
+                break;
+            }
+        }
+
+        return $node;
+    }
+
+    /**
+     * Factor is a member of a multiplication or a division
+     *
+     * factor : integerLiteral
+     */
+    private function factor(): Node
     {
         return $this->integerLiteral();
     }
@@ -81,10 +105,13 @@ class Parser
 
     /**
      * expression : term ((PLUS | MINUS) term)*
-     * term : integerLiteral
+     * term : factor ((MULTI | DIV)) factor)*
+     * factor : integerLiteral
      * integerLiteral : [0-9]+
      * PLUS : +
      * MINUS : -
+     * MULTI : *
+     * DIV : /
      */
     public function parse(): ?Node
     {

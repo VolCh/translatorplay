@@ -10,10 +10,12 @@ use InvalidArgumentException;
 class Token
 {
     public const TYPE_INTEGER = 'INTEGER';
+    public const TYPE_MULTI = 'MULTI';
+    public const TYPE_DIV = 'DIV';
     public const TYPE_PLUS = 'PLUS';
     public const TYPE_MINUS = 'MINUS';
 
-    private const TYPES = [self::TYPE_INTEGER, self::TYPE_PLUS, self::TYPE_MINUS];
+    private const TYPES = [self::TYPE_INTEGER, self::TYPE_PLUS, self::TYPE_MINUS, self::TYPE_MULTI, self::TYPE_DIV];
 
     /** @var string */
     private $type;

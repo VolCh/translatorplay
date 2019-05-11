@@ -32,6 +32,12 @@ class Tokenizer
             } elseif ($char === '-') {
                 $this->advance();
                 yield new Token(Token::TYPE_MINUS, '-');
+            } elseif ($char === '*') {
+                $this->advance();
+                yield new Token(Token::TYPE_MULTI, '*');
+            } elseif ($char === '/') {
+                $this->advance();
+                yield new Token(Token::TYPE_DIV, '/');
             } else {
                 throw new InvalidArgumentException("Unexpected symbol '{$char}' at a position {$this->pos}");
             }
