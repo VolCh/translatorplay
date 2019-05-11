@@ -41,21 +41,31 @@ class Parser
 
 
     /**
-     * expression : integerLiteral ((PLUS | MINUS) integerLiteral)*
+     * expression : term ((PLUS | MINUS) term)*
      */
     private function expression(): Node
     {
-        $node = $this->integerLiteral();
+        $node = $this->term();
         $token = $this->currentToken();
         while ($token !== null) {
             if (in_array($token->type(), [Token::TYPE_PLUS, Token::TYPE_MINUS], true)) {
                 $this->takeToken($token->type());
-                $node = new BinaryOperator($node, $token, $this->integerLiteral());
+                $node = new BinaryOperator($node, $token, $this->term());
                 $token = $this->currentToken();
             }
         }
 
         return $node;
+    }
+
+    /**
+     * Term is a member of an addition or an subtraction
+     *
+     * term : integerLiteral
+     */
+    private function term(): Node
+    {
+        return $this->integerLiteral();
     }
 
     /**
@@ -69,6 +79,13 @@ class Parser
         return new IntegerLiteral($token);
     }
 
+    /**
+     * expression : term ((PLUS | MINUS) term)*
+     * term : integerLiteral
+     * integerLiteral : [0-9]+
+     * PLUS : +
+     * MINUS : -
+     */
     public function parse(): ?Node
     {
         $token = $this->currentToken();
