@@ -50,4 +50,31 @@ class InterpreterTest extends Test
         $content = ob_get_clean();
         $this->assertEquals($content, '-1');
     }
+
+    public function testPlusMinusMinusPlus(): void
+    {
+        $interpreter = new Interpreter();
+        $tree =
+            new BinaryOperator(
+                new BinaryOperator(
+                    new BinaryOperator(
+                        new BinaryOperator(
+                            new IntegerLiteral(new Token(Token::TYPE_INTEGER, 1)),
+                            new Token(Token::TYPE_PLUS, '+'),
+                            new IntegerLiteral(new Token(Token::TYPE_INTEGER, 2))
+                        ),
+                        new Token(Token::TYPE_MINUS, '-'),
+                        new IntegerLiteral(new Token(Token::TYPE_INTEGER, 3))
+                    ),
+                    new Token(Token::TYPE_MINUS, '-'),
+                    new IntegerLiteral(new Token(Token::TYPE_INTEGER, 4))
+                ),
+                new Token(Token::TYPE_PLUS, '+'),
+                new IntegerLiteral(new Token(Token::TYPE_INTEGER, 5))
+            );
+        ob_start();
+        $interpreter->interpret($tree);
+        $content = ob_get_clean();
+        $this->assertEquals($content, '1');
+    }
 }
