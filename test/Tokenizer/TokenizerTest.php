@@ -59,6 +59,25 @@ class TokenizerTest extends Test
         ]);
     }
 
+    public function testMinus(): void
+    {
+        $tokens= (new Tokenizer('12-34'))->tokens();
+        $this->assertTokens($tokens, [
+            [
+                'type' => Token::TYPE_INTEGER,
+                'value' => 12,
+            ],
+            [
+                'type' => Token::TYPE_MINUS,
+                'value' => '-',
+            ],
+            [
+                'type' => Token::TYPE_INTEGER,
+                'value' => 34,
+            ],
+        ]);
+    }
+
     /**
      * @param Generator|Token[] $tokens
      * @param array[] $expectedTokensData

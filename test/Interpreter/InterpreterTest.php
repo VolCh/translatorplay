@@ -36,4 +36,18 @@ class InterpreterTest extends Test
         $content = ob_get_clean();
         $this->assertEquals($content, '3');
     }
+
+    public function testMinus(): void
+    {
+        $interpreter = new Interpreter();
+        $tree = new BinaryOperator(
+            new IntegerLiteral(new Token(Token::TYPE_INTEGER, 1)),
+            new Token(Token::TYPE_PLUS, '-'),
+            new IntegerLiteral(new Token(Token::TYPE_INTEGER, 2))
+        );
+        ob_start();
+        $interpreter->interpret($tree);
+        $content = ob_get_clean();
+        $this->assertEquals($content, '-1');
+    }
 }

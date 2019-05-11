@@ -6,14 +6,14 @@ use InvalidArgumentException;
 
 /**
  * Class Token
- * @package App\Tokenizer
  */
 class Token
 {
     public const TYPE_INTEGER = 'INTEGER';
     public const TYPE_PLUS = 'PLUS';
+    public const TYPE_MINUS = 'MINUS';
 
-    private const TYPES = [self::TYPE_INTEGER, self::TYPE_PLUS];
+    private const TYPES = [self::TYPE_INTEGER, self::TYPE_PLUS, self::TYPE_MINUS];
 
     /** @var string */
     private $type;

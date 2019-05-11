@@ -29,6 +29,9 @@ class Tokenizer
             } elseif ($char === '+') {
                 $this->advance();
                 yield new Token(Token::TYPE_PLUS, '+');
+            } elseif ($char === '-') {
+                $this->advance();
+                yield new Token(Token::TYPE_MINUS, '-');
             } else {
                 throw new InvalidArgumentException("Unexpected symbol '{$char}' at a position {$this->pos}");
             }

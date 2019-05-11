@@ -36,6 +36,9 @@ class Interpreter
         if ($node->operator()->value() === '+') {
             return $leftValue + $rightValue;
         }
+        if ($node->operator()->value() === '-') {
+            return $leftValue - $rightValue;
+        }
         throw new DomainException("Unknown operator {$node->operator()->value()}");
     }
 }
