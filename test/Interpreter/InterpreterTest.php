@@ -42,7 +42,7 @@ class InterpreterTest extends Test
         $interpreter = new Interpreter();
         $tree = new BinaryOperator(
             new IntegerLiteral(new Token(Token::TYPE_INTEGER, 1)),
-            new Token(Token::TYPE_PLUS, '-'),
+            new Token(Token::TYPE_MINUS, '-'),
             new IntegerLiteral(new Token(Token::TYPE_INTEGER, 2))
         );
         ob_start();

@@ -69,4 +69,57 @@ class ParserTest extends Test
             ],
         ]);
     }
+
+    public function testPlusMinusMinusPlus(): void
+    {
+        $tokens = static function () {
+            yield new Token(Token::TYPE_INTEGER, 1);
+            yield new Token(Token::TYPE_PLUS, '+');
+            yield new Token(Token::TYPE_INTEGER, 2);
+            yield new Token(Token::TYPE_MINUS, '-');
+            yield new Token(Token::TYPE_INTEGER, 3);
+            yield new Token(Token::TYPE_MINUS, '-');
+            yield new Token(Token::TYPE_INTEGER, 4);
+            yield new Token(Token::TYPE_PLUS, '+');
+            yield new Token(Token::TYPE_INTEGER, 5);
+        };
+        $parser = new Parser($tokens());
+        $tree = $parser->parse();
+        $this->assertEquals($tree->asArray(), [
+            'type' => 'BinaryOperator',
+            'operator' => '+',
+            'left' => [
+                'type' => 'BinaryOperator',
+                'operator' => '-',
+                'left' => [
+                    'type' => 'BinaryOperator',
+                    'operator' => '-',
+                    'left' => [
+                        'type' => 'BinaryOperator',
+                        'operator' => '+',
+                        'left' => [
+                            'type' => 'IntegerLiteral',
+                            'value' => 1,
+                        ],
+                        'right' => [
+                            'type' => 'IntegerLiteral',
+                            'value' => 2,
+                        ],
+                    ],
+                    'right' => [
+                        'type' => 'IntegerLiteral',
+                        'value' => 3,
+                    ],
+                ],
+                'right' => [
+                    'type' => 'IntegerLiteral',
+                    'value' => 4,
+                ],
+            ],
+            'right' => [
+                'type' => 'IntegerLiteral',
+                'value' => 5,
+            ],
+        ]);
+    }
 }
