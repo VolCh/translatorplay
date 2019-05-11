@@ -85,11 +85,23 @@ class Parser
     /**
      * Factor is a member of a multiplication or a division
      *
-     * factor : integerLiteral
+     * factor : integerLiteral | LEFT_PARENTHESIS expression RIGHT_PARENTHESIS
      */
     private function factor(): Node
     {
-        return $this->integerLiteral();
+        $token = $this->currentToken();
+        if ($token === null) {
+            throw new DomainException('Unexpected end, an expression is expected');
+        }
+        if ($token->type() === Token::TYPE_INTEGER) {
+            return $this->integerLiteral();
+        }
+        if ($token->type() === Token::TYPE_LEFT_PARENTHESIS) {
+            $this->takeToken(Token::TYPE_LEFT_PARENTHESIS);
+            $node = $this->expression();
+            $this->takeToken(TOKEN::TYPE_RIGHT_PARENTHESIS);
+            return $node;
+        }
     }
 
     /**
@@ -106,12 +118,14 @@ class Parser
     /**
      * expression : term ((PLUS | MINUS) term)*
      * term : factor ((MULTI | DIV)) factor)*
-     * factor : integerLiteral
+     * factor : integerLiteral | LEFT_PARENTHESIS expression RIGHT_PARENTHESIS
      * integerLiteral : [0-9]+
      * PLUS : +
      * MINUS : -
      * MULTI : *
      * DIV : /
+     * LEFT_PARENTHESIS : (
+     * RIGHT_PARENTHESIS : )
      */
     public function parse(): ?Node
     {

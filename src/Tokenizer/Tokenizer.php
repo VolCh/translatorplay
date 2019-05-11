@@ -38,6 +38,12 @@ class Tokenizer
             } elseif ($char === '/') {
                 $this->advance();
                 yield new Token(Token::TYPE_DIV, '/');
+            } elseif ($char === '(') {
+                $this->advance();
+                yield new Token(Token::TYPE_LEFT_PARENTHESIS, '(');
+            } elseif ($char === ')') {
+                $this->advance();
+                yield new Token(Token::TYPE_RIGHT_PARENTHESIS, ')');
             } else {
                 throw new InvalidArgumentException("Unexpected symbol '{$char}' at a position {$this->pos}");
             }

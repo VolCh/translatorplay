@@ -15,6 +15,8 @@ class Token
     public const TYPE_DIV = 'DIV';
     public const TYPE_PLUS = 'PLUS';
     public const TYPE_MINUS = 'MINUS';
+    public const TYPE_LEFT_PARENTHESIS = 'LEFT_PARENTHESIS';
+    public const TYPE_RIGHT_PARENTHESIS = 'RIGHT_PARENTHESIS';
 
     /** @var string */
     private $type;
