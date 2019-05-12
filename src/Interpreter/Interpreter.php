@@ -3,6 +3,7 @@
 namespace App\Interpreter;
 
 use App\Parser\Node\BinaryOperator;
+use App\Parser\Node\Constant;
 use App\Parser\Node\IntegerLiteral;
 use App\Parser\Node\Node;
 use DomainException;
@@ -46,5 +47,15 @@ class Interpreter
             return intdiv($leftValue, $rightValue);
         }
         throw new DomainException("Unknown operator {$node->operator()->value()}");
+    }
+
+    private function visitConstant(Constant $node) {
+        if ($node->value() === 'PI') {
+            return M_PI;
+        }
+        if ($node->value() === 'E') {
+            return M_E;
+        }
+        throw new DomainException("Unknown constant {$node->value()}");
     }
 }

@@ -11,6 +11,7 @@ use ReflectionClass;
 class Token
 {
     public const TYPE_INTEGER = 'INTEGER';
+    public const TYPE_IDENTIFIER = 'IDENTIFIER';
     public const TYPE_MULTI = 'MULTI';
     public const TYPE_DIV = 'DIV';
     public const TYPE_PLUS = 'PLUS';

@@ -3,6 +3,7 @@
 namespace App\Parser;
 
 use App\Parser\Node\BinaryOperator;
+use App\Parser\Node\Constant;
 use App\Parser\Node\IntegerLiteral;
 use App\Parser\Node\Node;
 use App\Tokenizer\Token;
@@ -96,6 +97,9 @@ class Parser
         if ($token->type() === Token::TYPE_INTEGER) {
             return $this->integerLiteral();
         }
+        if ($token->type() === Token::TYPE_IDENTIFIER) {
+            return $this->constant();
+        }
         if ($token->type() === Token::TYPE_LEFT_PARENTHESIS) {
             $this->takeToken(Token::TYPE_LEFT_PARENTHESIS);
             $node = $this->expression();
@@ -113,6 +117,17 @@ class Parser
         $this->takeToken(Token::TYPE_INTEGER);
 
         return new IntegerLiteral($token);
+    }
+
+    /**
+     * constant : [a-zA-z][0-9a-zA-z]*
+     */
+    private function constant(): Constant
+    {
+        $token = $this->currentToken();
+        $this->takeToken(Token::TYPE_IDENTIFIER);
+
+        return new Constant($token);
     }
 
     /**
@@ -134,6 +149,7 @@ class Parser
             return null;
         }
         switch ($token->type()) {
+            case Token::TYPE_IDENTIFIER;
             case Token::TYPE_INTEGER;
                 $node = $this->expression();
                 break;

@@ -24,7 +24,9 @@ class Tokenizer
     {
         while ($this->currentChar() !== null) {
             $char = $this->currentChar();
-            if (ctype_digit($char)) {
+            if (ctype_alpha($char)) {
+                yield new Token(Token::TYPE_IDENTIFIER, $this->identifier());
+            } elseif (ctype_digit($char)) {
                 yield new Token(Token::TYPE_INTEGER, $this->integer());
             } elseif ($char === '+') {
                 $this->advance();
@@ -69,5 +71,15 @@ class Tokenizer
             $this->advance();
         }
         return (int)$chars;
+    }
+
+    private function identifier(): string
+    {
+        $chars = '';
+        while (ctype_alnum($this->currentChar())) {
+            $chars .= $this->currentChar();
+            $this->advance();
+        }
+        return $chars;
     }
 }
