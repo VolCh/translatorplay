@@ -7,12 +7,25 @@ use App\Parser\Node\Constant;
 use App\Parser\Node\IntegerLiteral;
 use App\Parser\Node\Node;
 use DomainException;
+use Interpreter\Scope;
+use Interpreter\Symbol;
 
 /**
  * Class Interpreter
  */
 class Interpreter
 {
+    /** @var Scope */
+    private $builtinScope;
+
+    public function __construct()
+    {
+        $builtInScope = new Scope('BUILTIN', 0, null);
+        $builtInScope->addSymbolValue('PI', Symbol::TYPE_CONSTANT, M_PI);
+        $builtInScope->addSymbolValue('E', Symbol::TYPE_CONSTANT, M_E);
+        $this->builtinScope = $builtInScope;
+    }
+
     public function interpret(Node $node): void
     {
         $result = $this->visit($node);
@@ -50,12 +63,9 @@ class Interpreter
     }
 
     private function visitConstant(Constant $node) {
-        if ($node->value() === 'PI') {
-            return M_PI;
+        if (!$this->builtinScope->isSymbolExists($node->value(), Symbol::TYPE_CONSTANT)) {
+            throw new DomainException("Unknown constant {$node->value()}");
         }
-        if ($node->value() === 'E') {
-            return M_E;
-        }
-        throw new DomainException("Unknown constant {$node->value()}");
+        return $this->builtinScope->getSymbolValue($node->value(), Symbol::TYPE_CONSTANT);
     }
 }
